@@ -10,17 +10,20 @@ const runAll = async () => {
 
   document.getElementById("classify").addEventListener("click", function () {
     const docName = document.getElementById("doc-title").value;
+
     prediksi(docName);
+
   });
 
 
 
   async function prediksi(docName) {
+    document.getElementById("load").innerHTML = `Wait...`
     const doctitle = docName;
     const encoded = await useModel.embed(doctitle.toLowerCase());
     const prediction = await model.predict(encoded).array();
 
-    const tensorResults = prediction[0]
+    const tensorResults = prediction[0];
     const category = [
       'Berita acara Pencacahan dan perajangan pita cukai rusak, sisa baik, dan pelat cetak rusak',
       'Berita acara Pencacahan Etil Alkohol (EA) dan Minuman Mengandung Etil Alkohol',
@@ -60,18 +63,17 @@ const runAll = async () => {
       return parseFloat(b.confidence) - parseFloat(a.confidence);
     });
 
-    console.log(result);
     const resultTable = document.querySelector("#result tbody");
-    resultTable.innerHTML=``;
-   
+    resultTable.innerHTML = ``;
+
     for (i = 0; i < 5; i++) {
       const row = resultTable.insertRow(-1);
       const cell1 = row.insertCell(0);
       const cell2 = row.insertCell(1);
       cell1.innerHTML = result[i].category;
-      cell2.innerHTML = (result[i].confidence*100).toFixed(2)+"%";
+      cell2.innerHTML = (result[i].confidence * 100).toFixed(2) + "%";
     }
-
+    document.getElementById("load").innerHTML = `Done`
   }
 }
 
