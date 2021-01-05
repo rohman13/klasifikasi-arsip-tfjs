@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    table,
+    th,
+    tr,
+    td {
+      border: solid 1px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="title">Klasifikasi Arsip (berdasarkan judul)</h1>
+  <div id="loaded"></div>
+  <br>
+  <div class="form">
+    <input id="doc-title" type="text">
+    <button id="classify">Classify</button>
+  </div>
+  <br>
+  <table id="result">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Conf. Level</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/2.8.2/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
+  <script src="./tfsrc.js"></script>
+</body>
+
+</html>
