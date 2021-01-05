@@ -16,7 +16,7 @@
 </head>
 
 <body>
-  <h1 class="title">Klasifikasi Arsip (berdasarkan judul)</h1>
+  <h1 class="title">Klasifikasi arsip berdasarkan judul</h1>
   <div id="loaded"></div>
   <br>
   <div class="form">
@@ -35,7 +35,16 @@
 
     </tbody>
   </table>
-
+  <div class="link">
+    <ul>
+      <li>
+        <a href="./trained-data.csv">Trained data (csv)</a>
+      </li>
+      <li>
+        <a href="./index.js">Node app for model training</a>
+      </li>
+    </ul>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/2.8.2/tf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
   <script src="./tfsrc.js"></script>
