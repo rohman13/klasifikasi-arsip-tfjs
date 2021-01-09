@@ -8,12 +8,10 @@ const runAll = async () => {
   }
   loaded();
 
-  document.getElementById("classify").addEventListener("click", function () {
+  document.getElementById("classify").addEventListener("click", () => {
     const docName = document.getElementById("doc-title").value;
-
     prediksi2(docName);
     prediksi(docName);
-
   });
 
   const category = [
@@ -69,14 +67,15 @@ const runAll = async () => {
 
   //via api
   async function prediksi2(docName) {
+    data = { title: docName };
     document.getElementById("load2").innerHTML = `Wait...`;
-    const url = "https://arsip-tfjs.herokuapp.com/predict";
+    const url = "http://localhost:8080/predict";
     await fetch(url, {
       method: "POST",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        'Content-Type': 'application/json'
       },
-      body: docName,
+      body: JSON.stringify(data),
     })
       .then(response => response.json())
       .then(result => {
