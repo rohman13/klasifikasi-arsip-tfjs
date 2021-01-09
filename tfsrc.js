@@ -69,7 +69,7 @@ const runAll = async () => {
   async function prediksi2(docName) {
     data = { title: docName };
     document.getElementById("load2").innerHTML = `Wait...`;
-    const url = "http://localhost:8080/predict";
+    const url = "https://arsip-tfjs.herokuapp.com/predict";
     await fetch(url, {
       method: "POST",
       headers: {
