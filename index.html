@@ -17,39 +17,48 @@
 
 <body>
   <h1 class="title">Klasifikasi arsip berdasarkan judul</h1>
-  <div id="loaded"></div>
-  <br>
-  <div class="form">
-    <input id="doc-title" type="text">
-    <button id="classify">Classify</button>
-  </div>
-  <br>
-  <div id="load"></div>
-  <br>
-  <table id="result">
-    <thead>
-      <tr>
-        <th>Category</th>
-        <th>Confidence lvl</th>
-      </tr>
-    </thead>
-    <tbody>
+  <div>
+    <h2>*static js</h2>
+    <div id="loaded"></div>
+    <br>
+    <div class="form">
+      <input id="doc-title" type="text">
+      <button id="classify">Classify</button>
+    </div>
+    <br>
+    <div id="load"></div>
+    <br>
+    <table id="result">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Confidence lvl</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
 
-    </tbody>
-  </table>
-  <div class="link">
-    <ul>
-      <li>
-        <a href="./trained-data.csv">Trained data (csv)</a>
-      </li>
-      <li>
-        <a href="./index.js">Node app for model training</a>
-      </li>
-    </ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/2.8.2/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
+    <script src="./tfsrc.js"></script>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/2.8.2/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
-  <script src="./tfsrc.js"></script>
+  <br><br>
+  <div>
+    <h2>*node api</h2>
+    <div id="load2"></div>
+    <br>
+    <table id="result2">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Confidence lvl</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
 </body>
 
 </html>

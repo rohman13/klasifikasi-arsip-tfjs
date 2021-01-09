@@ -11,45 +11,45 @@ const runAll = async () => {
   document.getElementById("classify").addEventListener("click", function () {
     const docName = document.getElementById("doc-title").value;
 
+    prediksi2(docName);
     prediksi(docName);
 
   });
 
-
+  const category = [
+    'Berita acara Pencacahan dan perajangan pita cukai rusak, sisa baik, dan pelat cetak rusak',
+    'Berita acara Pencacahan Etil Alkohol (EA) dan Minuman Mengandung Etil Alkohol',
+    'Dokumen Pemasukan ke Tempat Penimbunan Berikat (TPB)',
+    'Dokumen Penetapan Tarif Cukai dan Golongan Perusahaan',
+    'Dokumen Produksi Barang Kena Cukai (BKC)',
+    'Inward manifest I outward manifest (BC 1.1) dan dokumen kelengkapannya',
+    'Izin impor sementara',
+    'Izin kawasan pabean',
+    'Izin tempat penimbunan sementara',
+    'Keputusan pembekuan NPPBKC',
+    'Keputusan pemberian Nomor Pokok pengusaha barang Kena cukai (NPPBKC)',
+    'Keputusan pencabutan NPPBKC',
+    'Keputusan Penetapan harga Jual Eceran (HJE) dan Tarif cukai',
+    'Laporan',
+    'laporan kawasan Berikat',
+    'Laporan Pangkalan Sarana Operasi',
+    'laporan pemanfaatan Sarana operasi',
+    'laporan produksi BKC',
+    'Lembar pemeliharaan saran operasi lainnya',
+    'Non Arsip',
+    'Pemberitahuan impor barang untuk ditimbun di TPB (BC 2.3)',
+    'Pemesanan pita cukai (CK-1 dan CK-1A)',
+    'Persuratan',
+    'Rencana Kedatangan Sarana Pengangkut / Jadwal Kedatangan Sarana Pengangkut (RKSP / JKSP) (BC 1.0)'
+  ];
 
   async function prediksi(docName) {
-    document.getElementById("load").innerHTML = `Wait...`
+    document.getElementById("load").innerHTML = `Wait...`;
     const doctitle = docName;
     const encoded = await useModel.embed(doctitle.toLowerCase());
     const prediction = await model.predict(encoded).array();
 
     const tensorResults = prediction[0];
-    const category = [
-      'Berita acara Pencacahan dan perajangan pita cukai rusak, sisa baik, dan pelat cetak rusak',
-      'Berita acara Pencacahan Etil Alkohol (EA) dan Minuman Mengandung Etil Alkohol',
-      'Dokumen Pemasukan ke Tempat Penimbunan Berikat (TPB)',
-      'Dokumen Penetapan Tarif Cukai dan Golongan Perusahaan',
-      'Dokumen Produksi Barang Kena Cukai (BKC)',
-      'Inward manifest I outward manifest (BC 1.1) dan dokumen kelengkapannya',
-      'Izin impor sementara',
-      'Izin kawasan pabean',
-      'Izin tempat penimbunan sementara',
-      'Keputusan pembekuan NPPBKC',
-      'Keputusan pemberian Nomor Pokok pengusaha barang Kena cukai (NPPBKC)',
-      'Keputusan pencabutan NPPBKC',
-      'Keputusan Penetapan harga Jual Eceran (HJE) dan Tarif cukai',
-      'Laporan',
-      'laporan kawasan Berikat',
-      'Laporan Pangkalan Sarana Operasi',
-      'laporan pemanfaatan Sarana operasi',
-      'laporan produksi BKC',
-      'Lembar pemeliharaan saran operasi lainnya',
-      'Non Arsip',
-      'Pemberitahuan impor barang untuk ditimbun di TPB (BC 2.3)',
-      'Pemesanan pita cukai (CK-1 dan CK-1A)',
-      'Persuratan',
-      'Rencana Kedatangan Sarana Pengangkut / Jadwal Kedatangan Sarana Pengangkut (RKSP / JKSP) (BC 1.0)'
-    ];
 
     let result = tensorResults.map((tensorVal, i) => {
       let properties = {
@@ -63,8 +63,33 @@ const runAll = async () => {
       return parseFloat(b.confidence) - parseFloat(a.confidence);
     });
 
+    await fillTable(result);
+    document.getElementById("load").innerHTML = `Done`;
+  }
+
+  //via api
+  async function prediksi2(docName) {
+    document.getElementById("load2").innerHTML = `Wait...`;
+    const url = "https://arsip-tfjs.herokuapp.com/predict";
+    await fetch(url, {
+      method: "POST",
+      body: docName,
+    })
+      .then( response => response.json())
+      .then(result=>{
+        console.log(result);
+      })
+
+    //await fillTable(result);
+    document.getElementById("load2").innerHTML = `Done`;
+  }
+
+
+  function fillTable(result) {
     const resultTable = document.querySelector("#result tbody");
+    const resultTable2 = document.querySelector("#result2 tbody");
     resultTable.innerHTML = ``;
+    resultTable2.innerHTML = ``;
 
     for (i = 0; i < 5; i++) {
       const row = resultTable.insertRow(-1);
@@ -73,8 +98,9 @@ const runAll = async () => {
       cell1.innerHTML = result[i].category;
       cell2.innerHTML = (result[i].confidence * 100).toFixed(2) + "%";
     }
-    document.getElementById("load").innerHTML = `Done`
   }
+
 }
 
 runAll();
+
