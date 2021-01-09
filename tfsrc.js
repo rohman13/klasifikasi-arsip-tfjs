@@ -73,10 +73,13 @@ const runAll = async () => {
     const url = "https://arsip-tfjs.herokuapp.com/predict";
     await fetch(url, {
       method: "POST",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      },
       body: docName,
     })
-      .then( response => response.json())
-      .then(result=>{
+      .then(response => response.json())
+      .then(result => {
         console.log(result);
       })
 
