@@ -8,10 +8,26 @@ const runAll = async () => {
   }
   loaded();
 
-  document.getElementById("classify").addEventListener("click", () => {
+  document.getElementById("classify").addEventListener("click", async () => {
     const docName = document.getElementById("doc-title").value;
-    prediksi2(docName);
-    prediksi(docName);
+
+    const pre1 = async() => {
+      const c = performance.now();
+      await prediksi(docName);
+      const d = performance.now();
+      console.log("via client: ", (d - c));
+    }
+    const pre2 = async() => {
+      const a = performance.now();
+      await prediksi2(docName);
+      const b = performance.now();
+      console.log("via api: ", (b - a));
+    }
+
+    await pre2();
+    pre1();
+    
+
   });
 
   const category = [
@@ -60,8 +76,9 @@ const runAll = async () => {
     result.sort((a, b) => {
       return parseFloat(b.confidence) - parseFloat(a.confidence);
     });
+    const resultTable = document.querySelector("#result tbody");
 
-    await fillTable(result);
+    await fillTable(result, resultTable);
     document.getElementById("load").innerHTML = `Done`;
   }
 
@@ -69,7 +86,8 @@ const runAll = async () => {
   async function prediksi2(docName) {
     data = { title: docName };
     document.getElementById("load2").innerHTML = `Wait...`;
-    const url = "https://arsip-tfjs.herokuapp.com/predict";
+    //const url = "https://arsip-tfjs.herokuapp.com/predict";
+    const url = "http://localhost:4000/predict";
     await fetch(url, {
       method: "POST",
       headers: {
@@ -79,19 +97,18 @@ const runAll = async () => {
     })
       .then(response => response.json())
       .then(result => {
-        console.log(result);
+        const resultTable2 = document.querySelector("#result2 tbody");
+        fillTable(result, resultTable2);
       })
 
-    //await fillTable(result);
+    //await 
     document.getElementById("load2").innerHTML = `Done`;
   }
 
 
-  function fillTable(result) {
-    const resultTable = document.querySelector("#result tbody");
-    const resultTable2 = document.querySelector("#result2 tbody");
+  function fillTable(result, resultTable) {
+
     resultTable.innerHTML = ``;
-    resultTable2.innerHTML = ``;
 
     for (i = 0; i < 5; i++) {
       const row = resultTable.insertRow(-1);
